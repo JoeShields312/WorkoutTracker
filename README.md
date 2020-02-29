@@ -12,6 +12,7 @@ A consumer will reach their fitness goals at a faster pace when they track their
 https://github.com/JShields30/WorkoutTracker
 
 ### the link to the functional app is shown below:
+https://workouttrackerjs.herokuapp.com/?id=5e5ad06cecdec85ee0cf7d90
 
 ## Coding Languages Used
 * HTML
