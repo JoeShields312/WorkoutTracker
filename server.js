@@ -14,7 +14,7 @@ const db = require('./models');
 console.log(WorkoutModel)
 
 // mongodb://localhost:27017/admin?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false
-mongoose.connect("mongodb://localhost/WorkoutTracker", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/WorkoutTracker", {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
