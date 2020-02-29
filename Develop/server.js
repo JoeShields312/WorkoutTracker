@@ -42,37 +42,37 @@ app.get('/stats', (req, res) => {
   res.sendFile(path.join(__dirname+'/public/stats.html'))
 })
 
-app.post('/api/workouts', async (req, res) => {
-  const working = db.Workout
-  const work = new working({ })
-  console.log(work)
-  console.log(working)
-  working.create(work)
-  .then(dbWorkoutModel => {
-    res.json(dbWorkoutModel)
-  })
-  .catch(err => {
-    res.status(400).send(err)
-  })
-})
+// app.post('/api/workouts', async (req, res) => {
+//   console.log(req.body)
+// db.Exercise.create(req.body)
+// .then(({ _id }) => {
+//   console.log(_id)
+//   return db.Workout.findOneAndUpdate({}, { $push: {exercises: _id} }, { new: true })})
+// .then(dbworkout => {
+//   console.log(dbworkout)
+//   res.json(dbworkout)
+// })
+// .catch(err => {
+//   res.json(err)
+// })
+// })
 
-app.put("/api/workouts/:id", (req, res) => {
-  WorkoutModel.findByIdAndUpdate(req.params.id, {$push: {exercises: req.body}}).then(
-    function (err) {
-    if (err) return next(err);
-    res.send('Workout udpated.');
-})
-.then(dbWorkout => {
-  res.json(dbWorkout)
-})
-.catch(err => {
-  res.status(400).json(err)
-})
-})
+// app.post('/api/workouts', async (req, res) => {
+//   const working = db.Workout
+//   const work = new working({ })
+//   console.log(work)
+//   console.log(working)
+//   working.create(work)
+//   .then(dbWorkoutModel => {
+//     res.json(dbWorkoutModel)
+//   })
+//   .catch(err => {
+//     res.status(400).send(err)
+//   })
+// })
 
-//Getting all workouts 
-app.get("/api/workouts", (req, res) => {
-  WorkoutModel.find({})
+app.post("/api/workouts", (req, res) => {
+  WorkoutModel.create({})
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
@@ -81,9 +81,49 @@ app.get("/api/workouts", (req, res) => {
     });
 });
 
+app.put("/api/workouts/:id", ({ body, params }, res) => {
+  WorkoutModel.findByIdAndUpdate(
+    params.id,
+    { $push: { exercises: body } },
+    // "runValidators" will ensure new exercises meet our schema requirements
+    { new: true, runValidators: true }
+  )
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+// app.put("/api/workouts/:id", (req, res) => {
+//   WorkoutModel.findByIdAndUpdate(req.params.id, {$push: {exercises: req.body}}).then(
+//     function (err) {
+//     if (err) return next(err);
+//     res.send('Workout udpated.');
+// })
+// .then(dbWorkout => {
+//   res.json(dbWorkout)
+// })
+// .catch(err => {
+//   res.status(400).json(err)
+// })
+// })
+
+//Getting all workouts 
+// app.get("/api/workouts", (req, res) => {
+//   WorkoutModel.find({})
+//   .populate("exercises")
+//     .then(dbWorkout => {
+//       res.json(dbWorkout);
+//     })
+//     .catch(err => {
+//       res.json(err);
+//     });
+// });
+
 //Getting the most recent 7 workouts
 app.get("/api/workouts", (req, res) => {
-  WorkoutModel.find().sort({ day: -1 }).limit(7)
+  WorkoutModel.find({})//.sort({ day: -1 }).limit(7)
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
